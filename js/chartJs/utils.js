@@ -6,6 +6,5 @@ export function showNoTransactions(chartId, messageId, message) {
 
   chartCanvas.style.display = "none";
   messageP.textContent = message;
-console.log("utils no transactions ");
 
 }

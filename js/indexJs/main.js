@@ -4,7 +4,7 @@ import { initRenderModule, renderTransactions } from "./transaction/render.js";
 import { addTransaction, initAddModule } from "./transaction/add.js";
 import { initGetData } from "./transaction/getData.js";
 import { downloadCSV } from "./csv.js";
-console.log("mainjs loaded");
+
 // Initialize
 const transactionHistory = loadTransactions();
 
@@ -51,19 +51,10 @@ monthFilter.addEventListener("input", renderTransactions);
 // CSV download
 downloadBtn.addEventListener("click", downloadCSV);
 
-// Analysis page button
-// analysisBtn.addEventListener("click", () => {
-//   const month = monthFilter.value;
-//   const url = month ? `./chart.html?month=${month}` : "./chart.html";
-//   window.open(url, "_blank");
-// }
 
-//
 analysisBtn.addEventListener("click", () => {
   const month = monthFilter.value;
-  // Correct path spelling here
   const url = month ? "chart.html?month=" + month : "chart.html";
   window.open(url, "_blank");
 });
 
-// finance\FinanaceModules\chart.html
