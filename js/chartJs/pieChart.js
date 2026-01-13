@@ -1,55 +1,63 @@
 
+import { showNoTransactions } from "./utils.js"; // Make sure you have this helper
 
-import { showNoTransactions } from "./utils.js";
-                      
+export function renderPieChart(pieTransactions, type, selectedMonth = null) {
+  let dataByCategory = {};
+  let total = 0;
 
-const chartInstances = {};
+  // Filter transactions by type and calculate totals
+  pieTransactions.forEach(tx => {
+    if (tx.type === type) {
+      const cat = tx.category || "Other";
+      dataByCategory[cat] = (dataByCategory[cat] || 0) + Number(tx.amount);
+      total += Number(tx.amount);
+    }
+  });
 
-export function renderPieChart(transactions, type) {
   const chartId = type === "income" ? "incomeChart" : "expenseChart";
   const totalId = type === "income" ? "totalIncome" : "totalExpense";
 
-  if (chartInstances[type]) chartInstances[type].destroy();
-
-  const filtered = transactions.filter(tx => tx.type === type);
-
-  if (!filtered.length) {
+  // Handle no transactions
+  if (!pieTransactions.some(tx => tx.type === type)) {
     showNoTransactions(
       chartId,
       totalId,
-      type === "income" ? "No income transactions" : "No expense transactions"
+      selectedMonth
+        ? `No ${type} transactions for ${selectedMonth}`
+        : `No ${type} transactions yet`
     );
     return;
   }
 
-  const byCategory = {};
-  let total = 0;
+  // Update total dynamically
+  document.getElementById(totalId).textContent = selectedMonth
+    ? `Total ${capitalize(type)} for ${selectedMonth}: ₹${total}`
+    : `Total ${capitalize(type)}: ₹${total}`;
 
-  filtered.forEach(tx => {
-    const cat = tx.category || "Other";
-    byCategory[cat] = (byCategory[cat] || 0) + Number(tx.amount);
-    total += Number(tx.amount);
-  });
-
-  document.getElementById(totalId).textContent =
+  // Pie chart colors
+  const backgroundColors =
     type === "income"
-      ? `Total Income: ₹${total}`
-      : `Total Expense: ₹${total}`;
+      ? ["#16a34a","#22c55e","#4ade80","#86efac","#d1fae5"]
+      : ["#dc2626","#ef4444","#f87171","#fca5a5","#fee2e2"];
 
-  chartInstances[type] = new Chart(
-    document.getElementById(chartId),
-    {
-      type: "pie",
-      data: {
-        labels: Object.keys(byCategory),
-        datasets: [{
-          data: Object.values(byCategory),
-          backgroundColor:
-            type === "income"
-              ? ["#16a34a","#22c55e","#4ade80","#86efac"]
-              : ["#dc2626","#ef4444","#f87171","#fca5a5"]
-        }]
-      }
+  // Render Chart
+  new Chart(document.getElementById(chartId), {
+    type: "pie",
+    data: {
+      labels: Object.keys(dataByCategory),
+      datasets: [{
+        data: Object.values(dataByCategory),
+        backgroundColor: backgroundColors
+      }]
+    },
+    options: {
+      plugins: { legend: { position: "bottom" } }
     }
-  );
+  });
 }
+
+// Helper to capitalize first letter
+function capitalize(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
