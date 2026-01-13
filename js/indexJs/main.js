@@ -55,6 +55,7 @@ downloadBtn.addEventListener("click", downloadCSV);
 analysisBtn.addEventListener("click", () => {
   const month = monthFilter.value;
   const url = month ? "chart.html?month=" + month : "chart.html";
-  window.open(url, "_blank");
+      window.location.href = url; 
+
 });
 
