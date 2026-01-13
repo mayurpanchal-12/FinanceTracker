@@ -20,5 +20,5 @@ const data = aggregateMonthlyData(transactions);
 renderLineChart(data);
 
 // Pie charts (filtered)
-renderPieChart(pieTransactions, "income");
-renderPieChart(pieTransactions, "expense");
+renderPieChart(pieTransactions, "income" , selectedMonth);
+renderPieChart(pieTransactions, "expense" , selectedMonth);
