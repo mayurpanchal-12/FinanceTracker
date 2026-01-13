@@ -3,7 +3,11 @@
 A personal finance tracking web application that helps users manage income and expenses efficiently with interactive data visualizations.
 
 ---
+## 🔗 Live Demo
 
+[Click here to see the app](https://mayurpanchal-12.github.io/FinanceTracker/)
+
+---
 ## 🚀 Features
 
 - Add, and delete transactions with amount, date, category, and type
